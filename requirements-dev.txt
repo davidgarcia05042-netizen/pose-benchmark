@@ -1,0 +1,19 @@
+# Dependencias de DESARROLLO. No van en la imagen de Render.
+#
+# Instalación (trae también las de producción):
+#   pip install --index-url https://download.pytorch.org/whl/cpu torch==2.13.0 torchvision==0.28.0
+#   pip install -r requirements-dev.txt
+#   pip uninstall -y opencv-python opencv-python-headless
+#   pip install --force-reinstall --no-deps opencv-contrib-python==4.11.0.86
+# (los dos últimos pasos son los mismos del Dockerfile: dejan una sola
+# distribución de OpenCV, la contrib, que es la que corre el servicio)
+
+-r requirements.txt
+
+# --- Suite de tests (misma versión que el servicio) ---
+pytest==9.1.1
+
+# --- Análisis local (scripts/analyze_results.py, scripts/build_report.py) ---
+pandas==2.2.3
+matplotlib==3.9.2
+python-docx==1.1.2

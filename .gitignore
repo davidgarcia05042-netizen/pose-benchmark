@@ -1,0 +1,24 @@
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+
+# Videos: son del grupo de investigación (y algún día de pacientes, Ley 1581).
+# Nunca a git, en ninguna carpeta: se bajan de Drive en cada corrida.
+videos/
+*.mp4
+*.mov
+*.avi
+
+# Resultados: se generan en cada corrida. Los de la primera fase (Docker,
+# 2026-08-25) siguen en results/ en el portátil, fuera de git.
+results/
+
+# Pesos descartados (YOLOv8). yolo26n-pose.pt SÍ se versiona: Render construye
+# la imagen desde este repositorio y el Dockerfile lo copia.
+*.pt
+!yolo26n-pose.pt
+
+# Credenciales de rclone (Google Drive): solo en variables de entorno.
+rclone.conf

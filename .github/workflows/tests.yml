@@ -1,0 +1,66 @@
+name: Tests
+
+# Preparado para cuando exista el repositorio en GitHub (bloqueador #4). Mismo
+# criterio que el servicio: cada cambio se verifica en su PR y otra vez al
+# entrar a main.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    name: pytest (suite completa)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - name: Librerías de sistema para OpenCV
+        # opencv-contrib-python (la que exige mediapipe) carga libGL y
+        # libgthread al importarse; los runners no las traen.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libgl1 libglib2.0-0t64 \
+            || sudo apt-get install -y --no-install-recommends libgl1 libglib2.0-0
+
+      - name: Instalar dependencias (mismos pasos que el Dockerfile)
+        run: |
+          pip install --index-url https://download.pytorch.org/whl/cpu torch==2.13.0 torchvision==0.28.0
+          pip install -r requirements-dev.txt
+          pip uninstall -y opencv-python opencv-python-headless
+          pip install --force-reinstall --no-deps opencv-contrib-python==4.11.0.86
+
+      - name: Correr la suite
+        # Los tests contra el repositorio del servicio se saltan acá (no está
+        # al lado); los de modelos reales corren (yolo26n-pose.pt se versiona).
+        run: pytest -q
+
+  imagen:
+    name: la imagen de Render construye
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      # El build ya corre `python -m benchmark.environment --check`: falla si
+      # las versiones no son las del servicio o si la rotación no se aplica.
+      - run: docker build --build-arg GIT_COMMIT=${GITHUB_SHA::7} -t pose-benchmark:ci .
+      # El reporte tiene que nombrar el commit: si no, las filas medidas con
+      # esta imagen quedarían con git_commit vacío.
+      - run: |
+          docker run --rm pose-benchmark:ci | tee entorno.txt
+          grep -q "Código (commit):    ${GITHUB_SHA::7}" entorno.txt

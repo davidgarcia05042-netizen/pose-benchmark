@@ -1,0 +1,17 @@
+# LISTA BLANCA: se excluye todo y se deja pasar solo lo que la imagen necesita.
+#
+# Por qué así y no al revés: una imagen se sube a un registro y cualquiera con
+# acceso puede extraer sus capas. Con una lista negra, un video de paciente
+# puesto en una carpeta nueva entraría sin que nadie lo notara; con una lista
+# blanca, no entra aunque el Dockerfile lo pida (el build falla).
+*
+
+!requirements.txt
+!benchmark/
+!scripts/__init__.py
+!scripts/run_benchmark.py
+!suites/
+!yolo26n-pose.pt
+
+**/__pycache__
+**/*.pyc

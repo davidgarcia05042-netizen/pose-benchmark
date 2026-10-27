@@ -1,0 +1,28 @@
+# Lo que se instala en la imagen de Render, y NADA más: todo lo que se agregue
+# acá viaja al contenedor. Lo de desarrollo (pytest, pandas para el análisis)
+# vive en requirements-dev.txt.
+
+# --- Iguales al servicio (su requirements.txt) ---
+# Una medición solo sirve para decidir sobre el servicio si corre las mismas
+# librerías. Si una de estas cambia allá, cambia acá, y las cifras anteriores
+# dejan de ser comparables. tests/test_config.py compara los dos archivos.
+mediapipe==0.10.14
+# opencv-contrib-python y NINGUNA otra distribución de OpenCV: todas escriben en
+# el mismo directorio cv2/ y la última instalada pisa a las otras. mediapipe
+# exige la contrib; ultralytics pide opencv-python, que el Dockerfile desinstala
+# después (ver ahí). Se fija la versión que efectivamente corre.
+opencv-contrib-python==4.11.0.86
+numpy==1.26.4
+
+# --- YOLO26-nano ---
+ultralytics==8.4.128
+# Se instalan ANTES, desde el índice CPU de PyTorch (ver Dockerfile): desde PyPI
+# llegaría la variante con CUDA, gigabytes que en Render no sirven de nada. Acá
+# se fijan para que este archivo no acepte otra versión.
+torch==2.13.0
+torchvision==0.28.0
+
+# --- Medición ---
+# La misma versión que usa la herramienta de medición del servicio
+# (app/tools/benchmark_pipeline.py, en su requirements-dev.txt).
+psutil==7.2.2

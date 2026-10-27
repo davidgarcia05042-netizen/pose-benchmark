@@ -1,0 +1,16 @@
+{
+  "name": "toma_frontal",
+  "description": "Ocho tomas de 'TOMA FRONTAL' del gold standard de entorno-pruebas. Grabadas con celular en vertical: todas declaran rotación de 90° en sus metadatos, así que ejercen el camino de open_video. Los archivos NO viven en este repositorio ni en la imagen: --videos-dir apunta a la carpeta que los contiene, o --videos-remote a su copia en Drive (gdrive:pose-benchmark/TOMA FRONTAL).",
+  "videos_dir_hint": "../entorno-pruebas/data/gold_standard/TOMA FRONTAL",
+  "accuracy_source": "entorno-pruebas: data/gold_standard/TOMA FRONTAL/<id>/<modelo>/no_occlusion/<timestamp>/metrics/summary.csv",
+  "videos": [
+    {"id": "2EJ1", "file": "2EJ1/2EJ1.mp4", "sha256": "8fe22a8480247d2252f9e9d96358ccb3bd5d89d7cc77fadc8526552d81d252c7", "joint": "left_shoulder", "mediapipe_points": [23, 11, 13], "frames": 325},
+    {"id": "2EJ3", "file": "2EJ3/2EJ3.mp4", "sha256": "d96e1a3921d161b9bd54a65e7a0a9fb816ec31f83e8122994dc6875e521720fa", "joint": "right_elbow", "mediapipe_points": [12, 14, 16], "frames": 410},
+    {"id": "6EJ3", "file": "6EJ3/6EJ3.mp4", "sha256": "43f83a645fb7f788a31312f692b54e14d5e6101a09e59a8b95cfe400d489e178", "joint": "right_elbow", "mediapipe_points": [12, 14, 16], "frames": 455},
+    {"id": "3EJ9", "file": "3EJ9/3EJ9.mp4", "sha256": "6d5cf9601fe6724a4d558040c96905004a3aceb66c76c10d3d588ebdebab9482", "joint": "right_knee", "mediapipe_points": [24, 26, 28], "frames": 501},
+    {"id": "3EJ10", "file": "3EJ10/3EJ10.mp4", "sha256": "4ed3876cdf64acc076f7c8b1d5fb916ade929353a1c8a2c75e30618088f3b4a1", "joint": "right_knee", "mediapipe_points": [24, 26, 28], "frames": 493},
+    {"id": "5EJ6", "file": "5EJ6/5EJ6.mp4", "sha256": "513d38b30246d945def6972f5bea63368289d702c4629d884a6fc3ffad9ec2a4", "joint": "right_knee", "mediapipe_points": [24, 26, 28], "frames": 382},
+    {"id": "5EJ9", "file": "5EJ9/5EJ9.mp4", "sha256": "2d323ddf8509dde121f1cb2587e3842b46ec491aee45119e2b71ce5bf310a3b5", "joint": "right_knee", "mediapipe_points": [24, 26, 28], "frames": 409},
+    {"id": "5EJ10", "file": "5EJ10/5EJ10.mp4", "sha256": "baa28fb4d5327b4e6cbe6450beebfba4ee2febbb433706e71afb041eae5a9c8e", "joint": "right_knee", "mediapipe_points": [24, 26, 28], "frames": 406}
+  ]
+}

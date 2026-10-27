@@ -1,0 +1,29 @@
+# Réplica LOCAL del hardware de Render: la misma imagen, con límite real de
+# 2 CPU / 8 GB por cgroup (Docker Desktop, motor WSL 2). Sirve para probar la
+# imagen antes de subirla y para medir con la misma metodología que la
+# referencia del 2026-08-25. No reproduce el procesador físico de Render.
+#
+#   docker compose build
+#   docker compose run --rm benchmark                         # reporte del entorno
+#   $env:VIDEOS_DIR = "..\entorno-pruebas\data\gold_standard\TOMA FRONTAL"
+#   docker compose run --rm benchmark python -m scripts.run_benchmark `
+#       --suite suites/toma_frontal.json --videos-dir /data/videos
+#
+# Los videos se montan de solo lectura desde VIDEOS_DIR: nunca entran a la imagen.
+services:
+  benchmark:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pose-benchmark:render
+    cpus: "2.0"
+    mem_limit: 8g
+    # Sin swap: con un límite duro, pasarse de 8 GB tiene que ser un OOM-kill
+    # visible, no una medición lenta por intercambio a disco.
+    memswap_limit: 8g
+    environment:
+      # Etiqueta de las filas, para no confundirlas con las de Render.
+      POSE_BENCHMARK_ENVIRONMENT: docker_2cpu_8gb
+    volumes:
+      - ./results:/app/results
+      - "${VIDEOS_DIR:-./videos}:/data/videos:ro"
